@@ -21,4 +21,15 @@
     <ProjectReference Include="..\ResortMan.Entities\ResortMan.Entities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Dashboard\Content\css\" />
+    <Folder Include="Areas\Dashboard\Content\vendor\" />
+    <Folder Include="Areas\Dashboard\Data\" />
+    <Folder Include="Areas\Dashboard\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\site.js" />
+  </ItemGroup>
+
 </Project>
