@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ResortMan.Services\ResortMan.Services.csproj" />
     <ProjectReference Include="..\ResortMan.Data\ResortMan.Data.csproj" />
     <ProjectReference Include="..\ResortMan.Entities\ResortMan.Entities.csproj" />
   </ItemGroup>

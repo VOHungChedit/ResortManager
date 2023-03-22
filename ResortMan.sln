@@ -5,11 +5,13 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F0A49960-F86F-4465-81AD-637AFB22F128}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResortMan.MvcApp", "src\ResortMan.MvcApp\ResortMan.MvcApp.csproj", "{ABE875AC-C267-40C2-B154-51124212FAEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResortMan.MvcApp", "src\ResortMan.MvcApp\ResortMan.MvcApp.csproj", "{ABE875AC-C267-40C2-B154-51124212FAEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResortMan.Entities", "src\ResortMan.Entities\ResortMan.Entities.csproj", "{126D553D-4C90-4E6C-A998-A9F52C03863F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResortMan.Entities", "src\ResortMan.Entities\ResortMan.Entities.csproj", "{126D553D-4C90-4E6C-A998-A9F52C03863F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResortMan.Data", "src\ResortMan.Data\ResortMan.Data.csproj", "{5FB41B4F-BA38-4DFA-84BC-2B47C9B7BE9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResortMan.Data", "src\ResortMan.Data\ResortMan.Data.csproj", "{5FB41B4F-BA38-4DFA-84BC-2B47C9B7BE9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResortMan.Services", "ResortMan.Services\ResortMan.Services.csproj", "{43F92514-07CB-4B9C-98FC-CF3460115745}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{5FB41B4F-BA38-4DFA-84BC-2B47C9B7BE9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FB41B4F-BA38-4DFA-84BC-2B47C9B7BE9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FB41B4F-BA38-4DFA-84BC-2B47C9B7BE9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43F92514-07CB-4B9C-98FC-CF3460115745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43F92514-07CB-4B9C-98FC-CF3460115745}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43F92514-07CB-4B9C-98FC-CF3460115745}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43F92514-07CB-4B9C-98FC-CF3460115745}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 		{ABE875AC-C267-40C2-B154-51124212FAEC} = {F0A49960-F86F-4465-81AD-637AFB22F128}
 		{126D553D-4C90-4E6C-A998-A9F52C03863F} = {F0A49960-F86F-4465-81AD-637AFB22F128}
 		{5FB41B4F-BA38-4DFA-84BC-2B47C9B7BE9C} = {F0A49960-F86F-4465-81AD-637AFB22F128}
+		{43F92514-07CB-4B9C-98FC-CF3460115745} = {F0A49960-F86F-4465-81AD-637AFB22F128}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6358CB48-7CD4-491C-83C2-525B27511C02}

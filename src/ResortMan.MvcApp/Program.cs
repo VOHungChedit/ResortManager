@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ResortMan.Data;
+using ResortMan.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<AccomodationTypesService>();
+
 var app = builder.Build();
 
 
@@ -30,7 +33,7 @@ using (var scope = app.Services.CreateScope())
     //var user = await userManager.FindByIdAsync("");
     //await userManager.AddToRoleAsync(user, "");
 
-    await roleManager.CreateAsync(new("Admin"));
+    await roleManager.CreateAsync(new("Administrator"));
 }
 
 // Configure the HTTP request pipeline.
