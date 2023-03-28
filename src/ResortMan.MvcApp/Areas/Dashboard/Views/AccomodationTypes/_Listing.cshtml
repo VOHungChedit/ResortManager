@@ -1,5 +1,5 @@
 ﻿@model AccomodationTypesListingModel
-@if(Model != null)
+@if(Model != null && Model.AccomodationTypes != null && Model.AccomodationTypes.Count() > 0)
 {
     <table class="table table-bordered">
         <thead>
@@ -17,13 +17,20 @@
                     <td>
                         @accomodationType.Name
                     </td>
-                    <td>@accomodationType.Description</td>
                     <td>
-                        <button type="button" class="btn btn-primary">Edit</button>
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        @accomodationType.Description
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary"><i class="fa-solid fa-trash"></i> Edit</button>
+                        <button type="button" class="btn btn-danger"><i class="fa-solid fa-pen"></i>  Delete</button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+}
+else{
+<div class="alert alert-warning" role="alert">
+    Sorry! No records exist.
+</div>
 }

@@ -15,4 +15,14 @@ public class AccomodationTypesService
     {
         return context.AccomodationTypes.ToList();
     }
+
+    public bool SaveAccomodationType(AccomodationType accomodationType)
+    {
+        context.AccomodationTypes.Add(accomodationType);
+        var row = context.SaveChanges();
+        return row > 0;
+
+    }
+
+
 }
