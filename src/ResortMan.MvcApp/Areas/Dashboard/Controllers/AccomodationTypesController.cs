@@ -38,7 +38,7 @@ public class AccomodationTypesController : Controller
     {
         AccomodationTypesActionModel model = new AccomodationTypesActionModel();
 
-        if (Id.HasValue) //we are trying to edit a record
+        if (Id.HasValue) 
         {
             var accomodationType = accomodationTypesService.GetAccomodationTypeById(Id.Value);
 
@@ -53,13 +53,26 @@ public class AccomodationTypesController : Controller
     [HttpPost]
     public ActionResult Action(AccomodationTypesActionModel model)
     {
-        AccomodationType accomodationType = new()
+        var result = false;
+        if (model.Id > 0)
         {
-            Name = model.Name,
-            Description = model.Description,
-        };
+            var accomodationType = accomodationTypesService.GetAccomodationTypeById(model.Id);
+            accomodationType.Name = model.Name;
+            accomodationType.Description = model.Description;
 
-        var result = accomodationTypesService.SaveAccomodationType(accomodationType);
+            result = accomodationTypesService.UpdateAccomodationType(accomodationType);
+        }
+        else
+        {
+            AccomodationType accomodationType = new()
+            {
+                Name = model.Name,
+                Description = model.Description,
+            };
+
+            result = accomodationTypesService.SaveAccomodationType(accomodationType);
+        }
+        
 
         object json;
         if (result)
@@ -69,7 +82,7 @@ public class AccomodationTypesController : Controller
         }
         else
         {
-            json = new { Success = false, Message = "Unable to add Accomodation Type." };
+            json = new { Success = false, Message = "Unable to perform action on Accomodation Types." };
         }
 
         return Json(json);

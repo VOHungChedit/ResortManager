@@ -19,6 +19,12 @@ public class AccomodationTypesService
     {
         return context.AccomodationTypes.Find(Id);
     }
+    public bool UpdateAccomodationType(AccomodationType accomodationType)
+    {
+
+        context.AccomodationTypes.Update(accomodationType);
+        return context.SaveChanges() > 0;
+    }
     public bool SaveAccomodationType(AccomodationType accomodationType)
     {
         context.AccomodationTypes.Add(accomodationType);
