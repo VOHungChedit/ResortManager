@@ -1,4 +1,5 @@
-﻿using ResortMan.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ResortMan.Data;
 using ResortMan.Entities;
 
 namespace ResortMan.Services;
@@ -25,7 +26,14 @@ public class AccomodationTypesService
         context.AccomodationTypes.Update(accomodationType);
         return context.SaveChanges() > 0;
     }
-    public bool SaveAccomodationType(AccomodationType accomodationType)
+
+	public bool DeleteAccomodationType(AccomodationType accomodationType)
+	{
+
+		context.AccomodationTypes.Remove(accomodationType);
+		return context.SaveChanges() > 0;
+	}
+	public bool SaveAccomodationType(AccomodationType accomodationType)
     {
         context.AccomodationTypes.Add(accomodationType);
         var row = context.SaveChanges();
