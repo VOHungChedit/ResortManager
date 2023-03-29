@@ -15,7 +15,10 @@ public class AccomodationTypesService
     {
         return context.AccomodationTypes.ToList();
     }
-
+    public AccomodationType GetAccomodationTypeById(int Id)
+    {
+        return context.AccomodationTypes.Find(Id);
+    }
     public bool SaveAccomodationType(AccomodationType accomodationType)
     {
         context.AccomodationTypes.Add(accomodationType);

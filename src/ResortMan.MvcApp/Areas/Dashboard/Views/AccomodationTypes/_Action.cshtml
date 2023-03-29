@@ -1,7 +1,7 @@
 ﻿@model AccomodationTypesActionModel
 @{
 }
-{
+
 <div class="modal-content">
 	<div class="modal-header">
 		<h5 class="modal-title">
@@ -14,13 +14,12 @@
 				<span>Create Accomodation Type</span>
 			}
 		</h5>
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 		</button>
 	</div>
 	<div class="modal-body">
 		<form id="actionForm">
-			<input type="hidden" name="ID" value="@Model.Id" />
+			<input type="hidden" name="Id" value="@Model.Id" />
 			<div class="form-group">
 				<label>Name</label>
 				<input class="form-control" name="Name" placeholder="Enter Accomodation Type Name." value="@Model.Name">
@@ -36,10 +35,10 @@
 	</div>
 	<div class="modal-footer">
 		<button id="actionButton" type="button" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Save</button>
-		<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-1"></i> Close</button>
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times mr-1"></i> Close</button>
 	</div>
 </div>
-}
+
 
 
 <script>
@@ -50,9 +49,7 @@
             data: $("#actionForm").serialize()
         })
             .done(function (response) {
-				console.log(response)
                 if (response.success) {
-					console.log("succ ")
                     location.reload();
                 }
                 else {

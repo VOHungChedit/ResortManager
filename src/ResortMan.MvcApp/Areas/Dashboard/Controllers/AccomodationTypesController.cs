@@ -34,9 +34,19 @@ public class AccomodationTypesController : Controller
     }
 
     [HttpGet]
-    public ActionResult Action()
+    public ActionResult Action(int? Id)
     {
         AccomodationTypesActionModel model = new AccomodationTypesActionModel();
+
+        if (Id.HasValue) //we are trying to edit a record
+        {
+            var accomodationType = accomodationTypesService.GetAccomodationTypeById(Id.Value);
+
+            model.Id = accomodationType.Id;
+            model.Name = accomodationType.Name;
+            model.Description = accomodationType.Description;
+        }
+
         return PartialView("_Action", model);
     }
 
