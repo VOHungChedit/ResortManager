@@ -7,11 +7,13 @@
 </div>
 <div class="row">
     <div class="col col-lg-12">
-        <div class="input-group" style="padding-top: 20px;padding-bottom:10px">
-            <input type="text" class="form-control" placeholder="Search">
-            <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search mr-1"></i> Search</button>
-            <a class="btn btn-outline-secondary" href="@Url.Action("Index", "AccomodationTypes")"><i class="fas fa-redo-alt mr-1"></i> Reset</a>
-            <button data-href="@Url.Action("Action", "AccomodationTypes")" class="data-btn btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#actionModal"><i class="fa-solid fa-plus"></i> Create </button>
+        <div class="input-group" style="padding-top: 20px;padding-bottom:15px">
+            <form method="get" style="display:flex; width: 100%;">
+                <input type="text"  class="form-control" placeholder="Search" id="searchTerm" name="searchTerm">
+                <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search mr-1"></i> Search</button>
+                <a class="btn btn-outline-secondary" href="@Url.Action("Index", "AccomodationTypes")"><i class="fas fa-redo-alt mr-1"></i> Reset</a>
+                <button data-href="@Url.Action("Action", "AccomodationTypes")" class="data-btn btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#actionModal"><i class="fa-solid fa-plus"></i> Create </button>
+            </form>
         </div>
     </div>
 </div>

@@ -23,8 +23,11 @@
         <div class="border-end bg-white" id="sidebar-wrapper">
             <div class="sidebar-heading border-bottom bg-light"><i class="fa-solid fa-hotel mr-1" style="color: #0077cc"></i> Resort Manager</div>
             <div class="list-group list-group-flush">
-                <a asp-action="Index" asp-controller="AccomodationTypes" class="list-group-item list-group-item-action list-group-item-light p-2">
+                <a href="@Url.Action("Index", "AccomodationTypes")" class="list-group-item list-group-item-action list-group-item-light ">
                     <i class="fa-solid fa-building mr-1 "></i> Accomodation Types
+                </a>
+                <a href="@Url.Action("Index", "AccomodationPackages")" class="list-group-item list-group-item-action bg-light">
+                    <i class="fas fa-project-diagram mr-1"></i> Accomodation Packages
                 </a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="@Url.Action("Index", "Roles")">
                     <i class="fa-solid fa-user-gear mr-1"></i>  Roles

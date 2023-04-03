@@ -19,6 +19,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<AccomodationTypesService>();
 
+builder.Services.AddScoped<AccomodationPackagesService>();
+
 var app = builder.Build();
 
 

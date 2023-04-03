@@ -15,22 +15,31 @@ public class AccomodationTypesController : Controller
 	{
 		this.accomodationTypesService = accomodationTypesService;
 	}
-	public IActionResult Index()
-	{
-		var list = accomodationTypesService.GetAccomodationTypes();
-		AccomodationTypesListingModel model = new AccomodationTypesListingModel()
-		{
-			AccomodationTypes = list,
-		};
-		return View(model);
-		//return View();
-	}
-
 	public IActionResult Listing()
 	{
 		AccomodationTypesListingModel model = new AccomodationTypesListingModel();
 		var list = accomodationTypesService.GetAccomodationTypes();
 		return PartialView("_Listing", model);
+	}
+	public IActionResult Index(string? searchTerm)
+	{
+		AccomodationTypesListingModel model;
+		if (searchTerm != null)
+		{
+			model = new AccomodationTypesListingModel();
+
+			model.AccomodationTypes = accomodationTypesService.SearchAccomodationTypes(searchTerm);
+
+			return View(model);
+		}
+
+		var list = accomodationTypesService.GetAccomodationTypes();
+		model = new AccomodationTypesListingModel()
+		{
+			AccomodationTypes = list,
+		};
+		return View(model);
+		//return View();
 	}
 
 	[HttpGet]

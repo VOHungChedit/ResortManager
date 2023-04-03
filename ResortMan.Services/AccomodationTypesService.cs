@@ -16,7 +16,17 @@ public class AccomodationTypesService
     {
         return context.AccomodationTypes.ToList();
     }
-    public AccomodationType GetAccomodationTypeById(int Id)
+	public IEnumerable<AccomodationType> SearchAccomodationTypes(string searchTerm)
+	{
+		var source = context.AccomodationTypes.AsQueryable();
+		if (!string.IsNullOrEmpty(searchTerm))
+		{
+			source = source.Where((AccomodationType a) => a.Name.ToLower().Contains(searchTerm.ToLower()));
+		}
+
+		return source.ToList();
+	}
+	public AccomodationType GetAccomodationTypeById(int Id)
     {
         return context.AccomodationTypes.Find(Id);
     }
