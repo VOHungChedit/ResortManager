@@ -1,43 +1,48 @@
 ﻿@model AccomodationPackageActionModel
 
-@if (Model != null)
+@if (true)
 {
-	<div class="modal-content">
-		<div class="modal-header">
-			<h5 class="modal-title">
-				@if (Model.Id > 0)
-				{
-					<span>Edit Accomodation Package</span>
-				}
-				else
-				{
-					<span>Create Accomodation Package</span>
-				}
-			</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-		</div>
-		<div class="modal-body">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                @if (Model == null)
+                {
+                    <span>Edit Accomodation Package</span>
+                }
+                else
+                {
+                    <span>Create Accomodation Package</span>
+                }
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+        </div>
+        <div class="modal-body">
             <form id="actionForm">
-                <input type="hidden" name="ID" value="@Model.Id" />
+                <input type="hidden" name="ID" value="@Model?.Id" />
                 <div class="form-group">
                     <label>Accomodation Type</label>
-                    <select class="form-control" name="AccomodationTypeID">
-
+                    <select class="form-control" name="AccomodationTypeId">
+                        @if (Model?.AccomodationTypes != null)
+                        {
+                            foreach (var type in Model.AccomodationTypes)
+                            {
+                                <option value="@type.Id" selected="@(type.Id == Model?.AccomodationTypeId ? "true":"false")">@type.Name</option>
+                            }
+                        }
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Name</label>
-                    <input class="form-control" name="Name" placeholder="Enter Accomodation Package Name." value="@Model.Name">
+                    <input class="form-control" name="Name" placeholder="Enter Accomodation Package Name." value="@Model?.Name">
                 </div>
                 <div class="form-group">
                     <label>No Of Rooms</label>
-                    <input class="form-control" name="NoOfRoom" placeholder="Enter No Of Rooms." value="@Model.NoOfRoom">
+                    <input class="form-control" name="NoOfRoom" placeholder="Enter No Of Rooms." value="@Model?.NoOfRoom">
                 </div>
                 <div class="form-group">
                     <label>FeePerNight</label>
-                    <input class="form-control" name="FeePerNight" placeholder="Enter Fee Per Night." value="@Model.FeePerNight">
+                    <input class="form-control" name="FeePerNight" placeholder="Enter Fee Per Night." value="@Model?.FeePerNight">
                 </div>
                 <div class="form-group">
                     <label>Pictures</label>
@@ -45,19 +50,17 @@
                     <input type="hidden" name="pictureIDs" id="pictureIDs" value="" />
                 </div>
                 <div id="picturesArea">
-
                 </div>
             </form>
-            
-			<div class="errorDiv">
 
-			</div>
-		</div>
-		<div class="modal-footer">
-			<button id="actionButton" type="button" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Save</button>
-			<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-1"></i> Close</button>
-		</div>
-	</div>
+            <div class="errorDiv">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="actionButton" type="button" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Save</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times mr-1"></i> Close</button>
+        </div>
+    </div>
 }
 
 <div id="imageTemplate">
@@ -66,7 +69,7 @@
 
 <script>
     $("#actionButton").click(function () {
-        
+
         var pictureIDs = [];
         $("#picturesArea img").each(function () {
             var picID = $(this).attr("data-id");
@@ -78,20 +81,19 @@
 
         debugger;
 
-		$.ajax({
-			url: '@Url.Action("Action", "AccomodationPackages")',
-			type: "post",
-			data: $("#actionForm").serialize()
-		})
-		.done(function (response) {
-			if(response.Success)
-			{
-				location.reload();
-			}
-			else {
-				$(".errorDiv").html(response.Message);
-			}
-		});
+        $.ajax({
+            url: '@Url.Action("Action", "AccomodationPackages")',
+            type: "post",
+            data: $("#actionForm").serialize()
+        })
+            .done(function (response) {
+                if (response.success) {
+                    location.reload();
+                }
+                else {
+                    $(".errorDiv").html(response.Message);
+                }
+            });
     });
 
     $("#selectPictures").change(function () {
@@ -104,26 +106,23 @@
             formData.append("Picture", pictures[i]);
         }
 
-		$.ajax({
-			url: '@Url.Action("UploadPictures", "Dashboard")',
+        $.ajax({
+            url: '@Url.Action("UploadPictures", "Dashboard")',
             type: "post",
             data: formData,
             processData: false,
-			contentType: false
-		})
-        .done(function (response) {
-            debugger;
-            for (var i = 0; i < response.length; i++) {
-                var picture = response[i];
-
-                var $imgHTML = $("#imageTemplate").clone();
-
-                $imgHTML.find("img").attr("src", "/images/site/" + picture.URL);
-                $imgHTML.find("img").attr("data-id", picture.ID);
-
-                $("#picturesArea").append($imgHTML.html());
-            }
-		});
+            contentType: false
+        })
+            .done(function (response) {
+                location.reload();
+                for (var i = 0; i < response.length; i++) {
+                    var picture = response[i];
+                    var $imgHTML = $("#imageTemplate").clone();
+                    $imgHTML.find("img").attr("src", "/images/site/" + picture.URL);
+                    $imgHTML.find("img").attr("data-id", picture.Id);
+                    $("#picturesArea").append($imgHTML.html());
+                }
+            });
     });
 
     function removeMe(element) {

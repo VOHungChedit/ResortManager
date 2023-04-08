@@ -1,4 +1,5 @@
-﻿using ResortMan.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ResortMan.Data;
 using ResortMan.Entities;
 
 namespace ResortMan.Services
@@ -6,14 +7,15 @@ namespace ResortMan.Services
     public class AccomodationPackagesService
     {
         private readonly ApplicationDbContext context;
-
         public AccomodationPackagesService(ApplicationDbContext context)
         {
             this.context = context;
         }
         public IEnumerable<AccomodationPackage> GetAccomodationPackages()
         {
-            return context.AccomodationsPackages.ToList();
+            return context.AccomodationsPackages
+                .Include(ap => ap.AccomodationType)
+                .ToList();
         }
         public IEnumerable<AccomodationPackage> SearchAccomodationPackages(string searchTerm)
         {
@@ -25,7 +27,7 @@ namespace ResortMan.Services
 
             return source.ToList();
         }
-        public AccomodationPackage GetAccomodationPackageById(int Id)
+        public AccomodationPackage? GetAccomodationPackageById(int Id)
         {
             return context.AccomodationsPackages.Find(Id);
         }
