@@ -1,0 +1,42 @@
+﻿
+<div class="modal-content">
+	<div class="modal-header">
+		<h5 class="modal-title">
+			<span>Delete ? </span>
+		</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+		</button>
+	</div>
+	<div class="modal-body">
+		<form id="actionForm">
+			<input type="hidden" name="Id" value="@Model.Id" />
+		</form>
+		<div class="alert alert-danger" role="alert">
+			Do you wan't Delete AccomodationTypes ?
+		</div>
+		</div>
+	<div class="modal-footer">
+		<button id="actionButton" type="button" class="btn btn-danger"><i class="fas fa-trash-alt mr-1"></i> Delete</button>
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times mr-1"></i> Close</button>
+	</div>
+</div>
+
+
+
+
+<script>
+	$("#actionButton").click(function () {
+		$.ajax({
+			url: '@Url.Action("Delete", "Accomodations")',
+			type: "delete",
+		})
+			.done(function (response) {
+				if (response.success) {
+					window.location.href = "@Url.Action("Index", "Accomodations")";
+				}
+				else {
+					$(".errorDiv").html(response.Message);
+				}
+			});
+	});
+</script>
