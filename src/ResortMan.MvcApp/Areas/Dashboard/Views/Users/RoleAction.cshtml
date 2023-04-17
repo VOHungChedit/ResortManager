@@ -1,0 +1,67 @@
+﻿@model UserRoleViewModel
+@{
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">
+
+            <span>Edit User Role</span>
+
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+    </div>
+    <div class="modal-body">
+        <form id="actionForm">
+            <input asp-for="UserId" type="hidden" />
+            <div class="form-group">
+                <label>Accomodation Type</label>
+                <select class="form-control" name="UserRole">
+                    @if (Model.Roles != null)
+                    {
+                        foreach (var type in Model.Roles)
+                        {
+                            <option value="@type" selected="@(type == Model?.UserRole ? "true":"false")">@type</option>
+                        }
+                    }
+                    <option value="">None</option>
+                </select>
+            </div>
+        </form>
+
+        <div class="errorDiv">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="actionButton" type="button" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times mr-1"></i> Close</button>
+    </div>
+</div>
+
+
+
+<script>
+    document.getElementById("actionButton").addEventListener("click", () => {
+        formPostEndpointHandler("/Dashboard/Users/RoleAction/@Model.UserId")
+    })
+    function formPostEndpointHandler(url, isReload = true, errorDiv = null) {
+        fetch(url, {
+            method: "Post",
+            body: new FormData(document.getElementById("actionForm"))
+        }).then((res) => {
+            if (res.ok) {
+                if (isReload) window.location.reload();
+            }
+            else {
+                return res.json()
+            }
+        }).then((ex) => {
+            if (errorDiv == null) {
+                errorDiv = document.getElementsByClassName("errorDiv")[0];
+            }
+            console.log(ex)
+            errorDiv.textContent = ex.detail;
+        })
+    }
+</script>
