@@ -10,4 +10,6 @@ public class AccomodationPackage
     public string Name { get; set; } = null!;
     public int NoOfRoom { get; set; }
     public decimal FeePerNight { get; set; }
+
+    public IList<AccomodationPackagePicture> Pictures { get; set; } = null!;
 }
