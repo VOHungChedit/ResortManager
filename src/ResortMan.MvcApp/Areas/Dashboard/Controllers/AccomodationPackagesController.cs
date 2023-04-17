@@ -1,156 +1,176 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ResortMan.Entities;
 using ResortMan.MvcApp.Areas.Dashboard.ViewModels;
 using ResortMan.Services;
+using System.IO.Compression;
+using System.IO;
 
 namespace ResortMan.MvcApp.Areas.Dashboard.Controllers;
 
 [Area("Dashboard")]
 public class AccomodationPackagesController : Controller
 {
-	private readonly AccomodationPackagesService accomodationPackagesService;
-	private readonly AccomodationTypesService accomodationTypesService;
+    private readonly AccomodationPackagesService accomodationPackagesService;
+    private readonly AccomodationTypesService accomodationTypesService;
 
-	public AccomodationPackagesController(AccomodationPackagesService accomodationPackagesService,
-		AccomodationTypesService accomodationTypesService)
-	{
-		this.accomodationPackagesService = accomodationPackagesService;
-		this.accomodationTypesService = accomodationTypesService;
-	}
-	public IActionResult Listing()
-	{
-		AccomodationPackagesListingModel model = new AccomodationPackagesListingModel();
-		var list = accomodationPackagesService.GetAccomodationPackages();
-		return PartialView("_Listing", model);
-	}
-	public IActionResult Index(string? searchTerm)
-	{
-		AccomodationPackagesListingModel model;
-		if (searchTerm != null)
-		{
-			model = new AccomodationPackagesListingModel();
+    public AccomodationPackagesController(AccomodationPackagesService accomodationPackagesService,
+        AccomodationTypesService accomodationTypesService)
+    {
+        this.accomodationPackagesService = accomodationPackagesService;
+        this.accomodationTypesService = accomodationTypesService;
+    }
+    public IActionResult Listing()
+    {
+        AccomodationPackagesListingModel model = new AccomodationPackagesListingModel();
+        var list = accomodationPackagesService.GetAccomodationPackages();
+        return PartialView("_Listing", model);
+    }
+    public IActionResult Index(string? searchTerm)
+    {
+        AccomodationPackagesListingModel model;
+        if (searchTerm != null)
+        {
+            model = new AccomodationPackagesListingModel();
 
-			model.AccomodationPackages = accomodationPackagesService.SearchAccomodationPackages(searchTerm);
+            model.AccomodationPackages = accomodationPackagesService.SearchAccomodationPackages(searchTerm);
 
-			return View(model);
-		}
+            return View(model);
+        }
 
-		var list = accomodationPackagesService.GetAccomodationPackages();
-		model = new AccomodationPackagesListingModel()
-		{
-			AccomodationPackages = list,
-		};
-		return View(model);
-		//return View();
-	}
-	[HttpGet]
-	public ActionResult Action(int? id)
-	{
-		var model = new AccomodationPackageActionModel()
-		{
-			AccomodationTypes = accomodationTypesService.GetAccomodationTypes()
-		};
+        var list = accomodationPackagesService.GetAccomodationPackages();
+        model = new AccomodationPackagesListingModel()
+        {
+            AccomodationPackages = list,
+        };
+        return View(model);
+        //return View();
+    }
+    [HttpGet]
+    public ActionResult Action(int? id)
+    {
+        var model = new AccomodationPackageActionModel()
+        {
+            AccomodationTypes = accomodationTypesService.GetAccomodationTypes()
+        };
 
-		if (id == null)
-		{
-			return PartialView("_Action", model);
-		}
+        if (id == null)
+        {
+            return PartialView("_Action", model);
+        }
 
-		var accomodationPackage = accomodationPackagesService.GetAccomodationPackageById(id.Value);
-		if (accomodationPackage == null)
-			return NotFound();
+        var accomodationPackage = accomodationPackagesService.GetAccomodationPackageById(id.Value);
+        if (accomodationPackage == null)
+            return NotFound();
 
-		model.Id = accomodationPackage.Id;
-		model.AccomodationTypeId = accomodationPackage.AccomodationTypeId;
-		model.AccomodationType = accomodationPackage.AccomodationType;
-		model.Name = accomodationPackage.Name;
-		model.NoOfRoom = accomodationPackage.NoOfRoom;
-		model.FeePerNight = accomodationPackage.FeePerNight;
+        model.Id = accomodationPackage.Id;
+        model.AccomodationTypeId = accomodationPackage.AccomodationTypeId;
+        model.AccomodationType = accomodationPackage.AccomodationType;
+        model.Name = accomodationPackage.Name;
+        model.NoOfRoom = accomodationPackage.NoOfRoom;
+        model.FeePerNight = accomodationPackage.FeePerNight;
 
-		return PartialView("_Action", model);
-	}
-	[HttpPost]
-	public JsonResult Action(AccomodationPackageActionModel model)
-	{
-		var result = false;
-		if (model.Id > 0)
-		{
-			var accomodationPackage = accomodationPackagesService.GetAccomodationPackageById(model.Id);
+        return PartialView("_Action", model);
+    }
+    [HttpPost]
+    public async Task<JsonResult> ActionAsync(AccomodationPackageActionModel model)
+    {
+        var result = false;
 
-			accomodationPackage.AccomodationTypeId = model.AccomodationTypeId;
-			accomodationPackage.AccomodationType = model.AccomodationType;
-			accomodationPackage.Name = model.Name;
-			accomodationPackage.NoOfRoom = model.NoOfRoom;
-			accomodationPackage.FeePerNight = model.FeePerNight;
+        var pictures = new List<AccomodationPackagePicture>();
+        if (model.Pictures != null)
+            foreach (var uploadPicture in model.Pictures)
+                using (var memoryStream = new MemoryStream())
+                {
+                    await uploadPicture.CopyToAsync(memoryStream);
 
-			result = accomodationPackagesService.UpdateAccomodationPackage(accomodationPackage);
-		}
-		else
-		{
-			AccomodationPackage accomodationPackage = new()
-			{
+                    var picture = new AccomodationPackagePicture()
+                    {
+                        ContentType = uploadPicture.ContentType,
+                        Data = memoryStream.ToArray()
+                    };
 
-				AccomodationTypeId = model.AccomodationTypeId,
-				Name = model.Name,
-				NoOfRoom = model.NoOfRoom,
-				FeePerNight = model.FeePerNight,
-			};
+                    pictures.Add(picture);
+                };
+        if (model.Id > 0)
+        {
+            var accomodationPackage = accomodationPackagesService.GetAccomodationPackageById(model.Id);
 
-			result = accomodationPackagesService.UpdateAccomodationPackage(accomodationPackage);
-		}
+            accomodationPackage.AccomodationTypeId = model.AccomodationTypeId;
+            accomodationPackage.AccomodationType = model.AccomodationType;
+            accomodationPackage.Name = model.Name;
+            accomodationPackage.NoOfRoom = model.NoOfRoom;
+            accomodationPackage.FeePerNight = model.FeePerNight;
+            accomodationPackage.Pictures = pictures;
+            result = accomodationPackagesService.UpdateAccomodationPackage(accomodationPackage);
+        }
+        else
+        {
+            AccomodationPackage accomodationPackage = new()
+            {
+
+                AccomodationTypeId = model.AccomodationTypeId,
+                Name = model.Name,
+                NoOfRoom = model.NoOfRoom,
+                FeePerNight = model.FeePerNight,
+                Pictures = pictures,
+            };
+
+            result = accomodationPackagesService.UpdateAccomodationPackage(accomodationPackage);
+        }
 
 
-		object json;
-		if (result)
-		{
-			json = new { Success = true };
+        object json;
+        if (result)
+        {
+            json = new { Success = true };
 
-		}
-		else
-		{
-			json = new { Success = false, Message = "Unable to perform action on Accomodation Types." };
-		}
+        }
+        else
+        {
+            json = new { Success = false, Message = "Unable to perform action on Accomodation Types." };
+        }
 
-		return Json(json);
+        return Json(json);
 
-	}
-	[HttpGet]
-	public ActionResult Delete(int Id)
-	{
-		AccomodationPackageActionModel model = new AccomodationPackageActionModel();
+    }
+    [HttpGet]
+    public ActionResult Delete(int Id)
+    {
+        AccomodationPackageActionModel model = new AccomodationPackageActionModel();
 
-		var accomodationType = accomodationPackagesService.GetAccomodationPackageById(Id);
+        var accomodationType = accomodationPackagesService.GetAccomodationPackageById(Id);
 
-		model.Id = accomodationType.Id;
+        model.Id = accomodationType.Id;
 
-		return PartialView("_Delete", model);
-	}
-	[HttpDelete]
-	[ActionName("Delete")]
-	public JsonResult DeleteConfirm(int Id)
-	{
-		var result = false;
+        return PartialView("_Delete", model);
+    }
+    [HttpDelete]
+    [ActionName("Delete")]
+    public JsonResult DeleteConfirm(int Id)
+    {
+        var result = false;
 
-		var accomodationPackage = accomodationPackagesService.GetAccomodationPackageById(Id);
+        var accomodationPackage = accomodationPackagesService.GetAccomodationPackageById(Id);
 
-		if (accomodationPackage == null)
-			result = false;
-		else
-		{
-			result = accomodationPackagesService.DeleteAccomodationPackage(accomodationPackage);
-		}
+        if (accomodationPackage == null)
+            result = false;
+        else
+        {
+            result = accomodationPackagesService.DeleteAccomodationPackage(accomodationPackage);
+        }
 
-		object json;
-		if (result)
-		{
-			json = new { Success = true };
+        object json;
+        if (result)
+        {
+            json = new { Success = true };
 
-		}
-		else
-		{
-			json = new { Success = false, Message = "Unable to perform action on Accomodation Types." };
-		}
+        }
+        else
+        {
+            json = new { Success = false, Message = "Unable to perform action on Accomodation Types." };
+        }
 
-		return Json(json);
-	}
+        return Json(json);
+    }
 }

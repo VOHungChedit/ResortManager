@@ -18,7 +18,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <form id="actionForm">
+            <form id="actionForm" enctype="multipart/form-data">
                 <input type="hidden" name="ID" value="@Model?.Id" />
                 <div class="form-group">
                     <label>Accomodation Type</label>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="form-group">
                     <label>Pictures</label>
-                    <input id="selectPictures" class="form-control" name="Pictures" type="file" multiple>
+                    <input id="Pictures" class="form-control" name="Pictures" type="file" multiple>
                     <input type="hidden" name="pictureIDs" id="pictureIDs" value="" />
                 </div>
                 <div id="picturesArea">
@@ -57,7 +57,9 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button id="actionButton" type="button" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Save</button>
+            <button id="actionButton" type="button" class="btn btn-primary" onclick="AJAXSubmit();return false;">
+                <i class="fas fa-save mr-1"></i> Save
+            </button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times mr-1"></i> Close</button>
         </div>
     </div>
@@ -68,62 +70,53 @@
 </div>
 
 <script>
-    $("#actionButton").click(function () {
-
-        var pictureIDs = [];
-        $("#picturesArea img").each(function () {
-            var picID = $(this).attr("data-id");
-
-            pictureIDs.push(picID);
-        });
-
-        $("#pictureIDs").val(pictureIDs.join());
-
-        debugger;
-
-        $.ajax({
-            url: '@Url.Action("Action", "AccomodationPackages")',
-            type: "post",
-            data: $("#actionForm").serialize()
-        })
-            .done(function (response) {
-                if (response.success) {
-                    location.reload();
-                }
-                else {
-                    $(".errorDiv").html(response.Message);
-                }
+    async function AJAXSubmit() {
+        var oFormElement = document.getElementById("actionForm")
+        const formData = new FormData(oFormElement);
+        try {
+            const response = await fetch("/Dashboard/AccomodationPackages/Action/", {
+                method: 'POST',
+                body: formData
             });
-    });
 
-    $("#selectPictures").change(function () {
-
-        var pictures = this.files;
-
-        var formData = new FormData();
-
-        for (var i = 0; i < pictures.length; i++) {
-            formData.append("Picture", pictures[i]);
-        }
-
-        $.ajax({
-            url: '@Url.Action("UploadPictures", "Dashboard")',
-            type: "post",
-            data: formData,
-            processData: false,
-            contentType: false
-        })
-            .done(function (response) {
+            if (response.ok) {
                 location.reload();
-                for (var i = 0; i < response.length; i++) {
-                    var picture = response[i];
-                    var $imgHTML = $("#imageTemplate").clone();
-                    $imgHTML.find("img").attr("src", "/images/site/" + picture.URL);
-                    $imgHTML.find("img").attr("data-id", picture.Id);
-                    $("#picturesArea").append($imgHTML.html());
-                }
-            });
-    });
+            }
+
+            resultElement.value = 'Result: ' + response.status + ' ' +
+                response.statusText;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    //$("#selectPictures").change(function () {
+
+    //    var pictures = this.files;
+
+    //    var formData = new FormData();
+
+    //    for (var i = 0; i < pictures.length; i++) {
+    //        formData.append("Picture", pictures[i]);
+    //    }
+
+    //    $.ajax({
+    //        url: '@Url.Action("UploadPictures", "Dashboard")',
+    //        type: "post",
+    //        data: formData,
+    //        processData: false,
+    //        contentType: false
+    //    })
+    //        .done(function (response) {
+    //            location.reload();
+    //            for (var i = 0; i < response.length; i++) {
+    //                var picture = response[i];
+    //                var $imgHTML = $("#imageTemplate").clone();
+    //                $imgHTML.find("img").attr("src", "/images/site/" + picture.URL);
+    //                $imgHTML.find("img").attr("data-id", picture.Id);
+    //                $("#picturesArea").append($imgHTML.html());
+    //            }
+    //        });
+    //});
 
     function removeMe(element) {
         element.remove();

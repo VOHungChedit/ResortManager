@@ -14,5 +14,7 @@ public class AccomodationPackageActionModel
     public decimal FeePerNight { get; set; }
 
     public IEnumerable<AccomodationType> AccomodationTypes { get; set; }
+
+    public List<IFormFile>? Pictures { get; set; }
 }
 

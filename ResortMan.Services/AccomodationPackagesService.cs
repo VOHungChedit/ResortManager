@@ -15,8 +15,24 @@ namespace ResortMan.Services
         {
             return context.AccomodationsPackages
                 .Include(ap => ap.AccomodationType)
+                .Include(ap => ap.Pictures)
+                .Select(ap => new AccomodationPackage()
+                {
+                    Id = ap.Id,
+                    Name = ap.Name,
+                    AccomodationTypeId = ap.AccomodationTypeId,
+                    NoOfRoom = ap.NoOfRoom,
+                    FeePerNight = ap.FeePerNight,
+                    Pictures = ap.Pictures.Select(p => new AccomodationPackagePicture()
+                    {
+                        Id = p.Id,
+                        ContentType = p.ContentType
+                    }).ToList(),
+                    AccomodationType = ap.AccomodationType,
+                })
                 .ToList();
         }
+
         public IEnumerable<AccomodationPackage> SearchAccomodationPackages(string searchTerm)
         {
             var source = context.AccomodationsPackages.AsQueryable();
