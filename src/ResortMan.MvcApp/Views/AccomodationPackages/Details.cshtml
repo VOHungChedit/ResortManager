@@ -1,0 +1,100 @@
+﻿@model AccomodationPackage
+@{
+    ViewData["Title"] = "Roomn Details";
+}
+
+
+<div class="detail-room">
+    <div class="site-section bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mx-auto text-center mb-5 section-heading">
+                    <h2 class="mb-5">Room Detail</h2>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var item in Model.Pictures)
+                {
+                    <div class="col-md-6 col-lg-4 mb-5">
+                        <div class="hotel-room text-center">
+                            <a href="/AccomodationPackages/Details/@Model.Id" class="d-block mb-0 thumbnail">
+                                <img src="/AccomodationPackagePictures/Index/@item.Id" alt="Image" class="img-fluid">
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="site-section site-section-sm">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12 col-lg-8 mb-5">
+                <h3 class="h5 text-black mb-3">Booking</h3>
+                <form action="/api/Booking/" method="post" class="p-5 bg-white">
+                    @*<input name="AccomodationId" id="AccomodationId" type="hidden" value="@Model.Id" />*@
+                    <div class="row form-group">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label class="font-weight-bold" for="FullName">Full Name.</label>
+                            <input type="text" id="FullName" name="FullName" class="form-control" placeholder="Full Name">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label class="font-weight-bold" for="Email">Email</label>
+                            <input type="email" id="Email" name="Email" class="form-control" placeholder="Email Address">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label class="font-weight-bold" for="PhoneNumber">Phone Number</label>
+                            <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" placeholder="Phone #">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Accomodations</label>
+                        <select class="form-control" name="AccomodationId">
+
+                                @foreach (var item in Model.Accomodations)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            
+                        </select>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label class="font-weight-bold" for="Notes">Notes</label>
+                            <textarea name="Notes" id="Notes" cols="30" rows="5" class="form-control" placeholder=" "></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <input type="submit" value="Booking" class="btn btn-primary pill px-4 py-2">
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="p-4 mb-3 bg-white">
+                    <h3 class="h5 text-black mb-3">Description</h3>
+                    <p class="mb-0 font-weight-bold">Location description</p>
+                    <p class="mb-4">Set in Da Lat, 1.2 km from Lam Vien Square and 1.2 km from Yersin Park Da Lat, Vuon Xuan Hotel offers accommodation with a garden as well as free private parking for guests who drive. This 3-star hotel offers room service and a concierge. It has a 24-hour front desk, a shared kitchen and organizes tours for guests.</p>
+
+                    <p class="mb-0 font-weight-bold">Phone</p>
+                    <p class="mb-4"><a href="#">+1 232 3235 324</a></p>
+
+                    <p class="mb-0 font-weight-bold">Email Address</p>
+                    <p class="mb-0"><a href="#">manager resort domain.com</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

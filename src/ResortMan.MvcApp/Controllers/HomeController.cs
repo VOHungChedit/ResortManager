@@ -1,34 +1,42 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ResortMan.MvcApp.Models;
+using ResortMan.MvcApp.ViewModels;
+using ResortMan.Services;
 using System.Diagnostics;
 
-namespace ResortMan.MvcApp.Controllers
+namespace ResortMan.MvcApp.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly ILogger<HomeController> _logger;
+    private readonly AccomodationPackagesService accomodationPackagesService;
+
+    public HomeController(ILogger<HomeController> logger,
+        AccomodationPackagesService accomodationPackagesService)
     {
-        private readonly ILogger<HomeController> _logger;
+        _logger = logger;
+        this.accomodationPackagesService = accomodationPackagesService;
+    }
 
-        public HomeController(ILogger<HomeController> logger)
+    public IActionResult Index()
+    {
+        var model = new HomeIndexViewModel()
         {
-            _logger = logger;
-        }
+            AccomodationPackages = accomodationPackagesService.GetPromote(6)
+        };
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View(model);
+    }
 
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+    public IActionResult Privacy()
+    {
+        return View();
+    }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

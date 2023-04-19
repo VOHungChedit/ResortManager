@@ -20,6 +20,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<AccomodationTypesService>();
 
 builder.Services.AddScoped<AccomodationPackagesService>();
+builder.Services.AddScoped<AccomodationsService>();
+builder.Services.AddScoped<BookingService>();
 
 var app = builder.Build();
 

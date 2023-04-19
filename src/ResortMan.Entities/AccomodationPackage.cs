@@ -12,4 +12,6 @@ public class AccomodationPackage
     public decimal FeePerNight { get; set; }
 
     public IList<AccomodationPackagePicture> Pictures { get; set; } = null!;
+
+    public ICollection<Accomodation> Accomodations { get; set; } = null!;
 }

@@ -1,16 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ResortMan.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace ResortMan.Entities;
+namespace ResortMan.MvcApp.ViewModels;
 
-public class Booking
+public class BookingCreateDto
 {
-    public int Id { get; set; }
     public string FullName { get; set; }
     public string Email { get; set; }
 
     public int AccomodationId { get; set; }
-    
-    public Accomodation Accomodation { get; set; } = null!;
 
     public DateTime FromDate { get; set; }
 

@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Staff\Content\css\" />
+    <Folder Include="Areas\Staff\Content\vendor\" />
+    <Folder Include="Areas\Staff\Controllers\" />
+    <Folder Include="Areas\Staff\Data\" />
+    <Folder Include="Areas\Staff\Models\" />
     <Folder Include="Areas\Dashboard\Content\css\" />
     <Folder Include="Areas\Dashboard\Content\vendor\" />
     <Folder Include="Areas\Dashboard\Data\" />
@@ -30,6 +35,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\images\.DS_Store" />
+    <None Include="wwwroot\images\about_2.jpg" />
+    <None Include="wwwroot\images\about_3.jpg" />
+    <None Include="wwwroot\images\hero_1.jpg" />
+    <None Include="wwwroot\images\hero_2.jpg" />
+    <None Include="wwwroot\images\hero_3.jpg" />
+    <None Include="wwwroot\images\img_1.jpg" />
+    <None Include="wwwroot\images\img_2.jpg" />
+    <None Include="wwwroot\images\img_3.jpg" />
+    <None Include="wwwroot\images\img_4.jpg" />
+    <None Include="wwwroot\images\img_5.jpg" />
+    <None Include="wwwroot\images\img_6.jpg" />
+    <None Include="wwwroot\images\img_7.jpg" />
+    <None Include="wwwroot\images\person_1.jpg" />
+    <None Include="wwwroot\images\person_2.jpg" />
+    <None Include="wwwroot\images\person_3.jpg" />
+    <None Include="wwwroot\images\person_4.jpg" />
     <None Include="wwwroot\js\site.js" />
   </ItemGroup>
 
