@@ -64,5 +64,26 @@ namespace ResortMan.Services
 
             return true;
         }
+        public List<Booking>GetBookings()
+        {
+            var data = _context.Bookings.ToList();
+            return data;
+        }
+        public IEnumerable<Booking> SearchBooking(string searchTerm)
+        {
+            var source = _context.Bookings.AsQueryable();
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                source = source.Where((Booking a) => a.FullName.ToLower().Contains(searchTerm.ToLower())||
+                    a.PhoneNumber.ToLower().Contains(searchTerm.ToLower()));
+            }
+            return source.ToList();
+        }
+        public bool UpdateBooking(Booking booking)
+        {
+
+            _context.Bookings.Update(booking);
+            return _context.SaveChanges() > 0;
+        }
     }
 }
