@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>@ViewData["Title"] - ResortMan.MvcApp</title>
+
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/ResortMan.MvcApp.styles.css" asp-append-version="true" />
+    <link href="~/css/styles.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom bg-light"><a asp-area="" asp-controller="Home" asp-action="Index" class="fa-solid fa-hotel mr-1" style="color: #0077cc"></a> Resort Manager</div>
+            <div class="list-group list-group-flush">
+                <a href="@Url.Action("Index", "Bookings")" class="list-group-item list-group-item-action list-group-item-light ">
+                    <i class="fa-solid fa-building mr-1 "></i> Bookings
+                </a>
+            </div>
+        </div>
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+            <!-- Top navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="container-fluid">
+                    <button class="btn btn-primary" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+                    <partial name="_LoginPartial" />
+                </div>
+            </nav>
+            <!-- Page content-->
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/scripts.js"></script>
+    <!-- Core theme JS-->
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

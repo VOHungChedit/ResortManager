@@ -1,0 +1,15 @@
+﻿@model BookingFilter
+
+<form method="get" class="booking-filter">
+    <div class="mb-3">
+        <label class="form-label" asp-for="PhoneNumber">Phone Number</label>
+        <input class="form-control" asp-for="PhoneNumber" placeholder="Enter phone number" />
+        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="UserEmail">Email</label>
+        <input class="form-control" asp-for="UserEmail" placeholder="Enter email address" />
+        <span class="text-danger" asp-validation-for="UserEmail"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>

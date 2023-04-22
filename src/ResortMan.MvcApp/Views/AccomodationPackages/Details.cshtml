@@ -2,8 +2,6 @@
 @{
     ViewData["Title"] = "Roomn Details";
 }
-
-
 <div class="detail-room">
     <div class="site-section bg-light">
         <div class="container">
@@ -30,10 +28,9 @@
 <div class="site-section site-section-sm">
     <div class="container">
         <div class="row">
-
             <div class="col-md-12 col-lg-8 mb-5">
                 <h3 class="h5 text-black mb-3">Booking</h3>
-                <form action="/api/Booking/" method="post" class="p-5 bg-white">
+                <form id="bookingForm" action="/api/Booking/" method="post" class="p-5 bg-white">
                     @*<input name="AccomodationId" id="AccomodationId" type="hidden" value="@Model.Id" />*@
                     <div class="row form-group">
                         <div class="col-md-12 mb-3 mb-md-0">
@@ -53,16 +50,15 @@
                             <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" placeholder="Phone #">
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label>Accomodations</label>
                         <select class="form-control" name="AccomodationId">
 
-                                @foreach (var item in Model.Accomodations)
-                                {
-                                    <option value="@item.Id">@item.Name</option>
-                                }
-                            
+                            @foreach (var item in Model.Accomodations)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
                         </select>
                     </div>
                     <div class="row form-group">
@@ -71,14 +67,14 @@
                             <textarea name="Notes" id="Notes" cols="30" rows="5" class="form-control" placeholder=" "></textarea>
                         </div>
                     </div>
-
                     <div class="row form-group">
+                        <div class="row form-group">
+                            <div id="bookingFormSummary" class="text-danger"></div>
+                        </div>
                         <div class="col-md-12">
-                            <input type="submit" value="Booking" class="btn btn-primary pill px-4 py-2">
+                            <input id="bookingSubmitBtn" type="submit" value="Booking" class="btn btn-primary pill px-4 py-2">
                         </div>
                     </div>
-
-
                 </form>
             </div>
 
@@ -92,9 +88,37 @@
                     <p class="mb-4"><a href="#">+1 232 3235 324</a></p>
 
                     <p class="mb-0 font-weight-bold">Email Address</p>
-                    <p class="mb-0"><a href="#">manager resort domain.com</a></p>
+                    <p class="mb-0"><a href="#">manager resort.com</a></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@section Scripts {
+   @* <script>
+        const bookingSubmitBtn = document.getElementById("bookingSubmitBtn")
+        bookingSubmitBtn.addEventListener('click', async () => {
+            console.log("cliked");
+            let oFormElement = document.getElementById("bookingForm")
+            let formSummary = document.getElementById("bookingFormSummary")
+            const formData = new FormData(oFormElement);
+            try {
+                const response = await fetch("/api/Booking/", {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    formSummary.innerHTML = "OK"
+                }
+                else {
+                    var body = await response.json()
+                    console.log(body)
+                    formSummary.innerHTML = body.title
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        })
+    //</script>
+*@
+}

@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="~/fonts/flaticon/font/flaticon.css">
     <link rel="stylesheet" href="~/css/aos.css">
     <link rel="stylesheet" href="~/css/style.css">
-
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body>
@@ -64,10 +64,15 @@
                                                 <a class="" asp-area="Dashboard" asp-controller="Dashboard" asp-action="Index">Dash Board</a>
                                             </li>
                                         }
-                                        else
+                                        else if (User.IsInRole("Staff"))
                                         {
                                             <li class="">
-                                                <a class="" asp-area="Dashboard" asp-controller="Dashboard" asp-action="Index">Dash Board</a>
+                                                <a class="" asp-area="Staff" asp-controller="Staff" asp-action="Index">Manage Booking</a>
+                                            </li>
+                                        }
+                                        else  {
+                                            <li class="">
+                                                <a class="" asp-area="" asp-controller="Booking" asp-action="Index">Booking</a>
                                             </li>
                                         }
                                         @if (SignInManager.IsSignedIn(User))

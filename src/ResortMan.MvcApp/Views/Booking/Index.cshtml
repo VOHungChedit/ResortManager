@@ -1,0 +1,44 @@
+﻿@model BookingIndexViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="booking-index" style="max-width: 800px;margin: 0 auto;padding: 20px">
+    <h1>Booking</h1>
+
+    <div class="booking-search" style="margin-bottom: 20px">
+        <partial name="_BookingSearchPartial" model="Model.Filter" />
+    </div>
+
+    @if (Model.Bookings != null)
+    {
+        <table class="booking-list table" style="font-size: 16px">
+            <thead>
+                <tr>
+                    <th scope="col">From Date</th>
+                    <th scope="col">Accomodation</th>
+                    <th scope="col">Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model.Bookings)
+                {
+                    <tr>
+                        <td>@booking.FromDate</td>
+                        <td>@booking.Accomodation.Name</td>
+                        <td>@booking.PhoneNumber</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@section Styles {
+    <style>
+            
+    </style>
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

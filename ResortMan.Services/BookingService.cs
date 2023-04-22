@@ -1,4 +1,5 @@
-﻿using ResortMan.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ResortMan.Data;
 using ResortMan.Entities;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace ResortMan.Services
 
             return true;
         }
-        public List<Booking>GetBookings()
+        public List<Booking> GetBookings()
         {
             var data = _context.Bookings.ToList();
             return data;
@@ -74,10 +75,20 @@ namespace ResortMan.Services
             var source = _context.Bookings.AsQueryable();
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                source = source.Where((Booking a) => a.FullName.ToLower().Contains(searchTerm.ToLower())||
+                source = source.Where((Booking a) => a.FullName.ToLower().Contains(searchTerm.ToLower()) ||
                     a.PhoneNumber.ToLower().Contains(searchTerm.ToLower()));
             }
             return source.ToList();
+        }
+
+        public List<Booking> GetBookingsForUser(string phoneNumber, string userEmail)
+        {
+            var data = _context.Bookings.AsNoTracking()
+                .Include(b => b.Accomodation)
+                .Where(b => b.Email == userEmail || b.PhoneNumber == phoneNumber)
+                .ToList();
+
+            return data;
         }
         public bool UpdateBooking(Booking booking)
         {
