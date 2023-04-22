@@ -1,0 +1,40 @@
+﻿@model BookingListingModel
+<div class="row">
+    <div class="col col-lg-12">
+        <h2>Booking</h2>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col col-lg-12">
+        <div class="input-group" style="padding-top: 20px;padding-bottom:15px">
+            <form method="get" style="display:flex; width: 100%;">
+                <input type="text"  class="form-control" placeholder="Search" id="searchTerm" name="searchTerm">
+                <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search mr-1"></i> Search</button>
+                <a class="btn btn-outline-secondary" href="@Url.Action("Index")"><i class="fas fa-redo-alt mr-1"></i> Reset</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<partial name="_Listing" model="Model"></partial>
+
+<!-- Modal -->
+<div class="modal fade" id="actionModal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(".data-btn").click(function () {
+            $.ajax({
+                url: $(this).attr("data-href"),
+            })
+                .done(function (response) {
+                    $("#actionModal .modal-dialog").html(response);
+                });
+        });
+    </script>
+}

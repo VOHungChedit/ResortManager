@@ -1,0 +1,55 @@
+﻿@model BookingListingModel
+@if(Model != null && Model.Bookings != null && Model.Bookings.Count() > 0)
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Accomodation</th>
+                <th scope="col">FromDate</th>
+                <th scope="col">PhoneNumber</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Note</th>
+            </tr>
+        </thead>
+        <tbody >
+            @foreach (var item in Model.Bookings)
+            {
+                <tr>
+                    <td>
+                        @item.FullName
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td>
+                        @item.Accomodation
+                    </td>
+                    <td>
+                        @item.FromDate
+                    </td>
+                    <td>
+                        @item.PhoneNumber
+                    </td>
+                    <td>
+                        @item.Duration
+                    </td>
+                    <td>
+                        @item.Note
+                    </td>
+                    <td>
+                        <button data-href="@Url.Action("Action",  new { Id = item.Id })" type="button" class="data-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#actionModal"><i class="fas fa-pen mr-1"></i> Edit</button>
+                        <button data-href="@Url.Action("Delete",  new { Id = item.Id })" type="button" class="data-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#actionModal"><i class="fas fa-trash-alt mr-1"></i> Delete</button>
+                        
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else{
+<div class="alert alert-warning" role="alert">
+    Sorry! No records exist.
+</div>
+}
