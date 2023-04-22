@@ -13,121 +13,135 @@ namespace ResortMan.MvcApp.Areas.Staff.Controllers;
 [Area("Staff")]
 public class BookingsController : Controller
 {
-    private readonly BookingService bookingsService;
+	private readonly BookingService bookingsService;
 
-    public BookingsController(BookingService bookingsService)
-    {
-        this.bookingsService = bookingsService;
-    }
+	public BookingsController(BookingService bookingsService)
+	{
+		this.bookingsService = bookingsService;
+	}
 
-    public IActionResult Index(string? searchTerm)
-    {
-        BookingListingModel model;
-        if (searchTerm != null)
-        {
-            model = new BookingListingModel();
+	public IActionResult Index(string? searchTerm)
+	{
+		BookingListingModel model;
+		if (searchTerm != null)
+		{
+			model = new BookingListingModel();
 
-            model.Bookings = bookingsService.SearchBooking(searchTerm);
+			model.Bookings = bookingsService.SearchBooking(searchTerm);
 
-            return View(model);
-        }
+			return View(model);
+		}
 
-        var list = bookingsService.GetBookings();
-        model = new BookingListingModel()
-        {
-            Bookings = list,
-        };
-        return View(model);
-    }
+		var list = bookingsService.GetBookings();
+		model = new BookingListingModel()
+		{
+			Bookings = list,
+		};
+		return View(model);
+	}
 
-    [HttpGet]
-    public ActionResult Action(int? Id)
-    {
-        var model = new BookingActionModel();
+	[HttpGet]
+	public ActionResult Action(int? id)
+	{
+		var model = new BookingActionModel();
 
-        if (Id.HasValue)
-        {
-            var booking = bookingsService.GetBookingById(Id.Value);
+		if (id == null)
+			return BadRequest();
 
-            model.Id = booking.Id;
-            model.FullName = booking.FullName;
-            model.Email = booking.Email;
-            model.PhoneNumber = booking.PhoneNumber;
-            model.Duration = booking.Duration;
-            model.Note = booking.Note;
-            model.FromDate = booking.FromDate;
-            model.AccomodationId = booking.AccomodationId;
+		var booking = bookingsService.GetBookingById(id.Value);
 
-        }
+		if (booking == null)
+			return NotFound();
 
-        return PartialView( model);
-    }
+		model.Id = booking.Id;
+		model.FullName = booking.FullName;
+		model.Email = booking.Email;
+		model.PhoneNumber = booking.PhoneNumber;
+		model.Duration = booking.Duration;
+		model.Note = booking.Note;
+		model.FromDate = booking.FromDate;
+		model.AccomodationId = booking.AccomodationId;
 
-    [HttpPost]
-    public JsonResult Action(BookingActionModel model)
-    {
-        var result = false;
+		return PartialView(model);
+	}
 
-        var booking = bookingsService.GetBookingById(model.Id);
+	[HttpPost]
+	public IActionResult Action(BookingActionModel model)
+	{
+		var result = false;
 
-        booking.FullName = model.FullName;
-        booking.Email = model.Email;
-        booking.PhoneNumber = model.PhoneNumber;
-        booking.Duration = model.Duration;
-        booking.Note = model.Note;
-        booking.FromDate = model.FromDate;
-        booking.AccomodationId = model.AccomodationId;
+		var booking = bookingsService.GetBookingById(model.Id);
 
-        result = bookingsService.UpdateBooking(booking);
+		if (booking == null)
+			return BadRequest();
 
-        object json;
-        if (result)
-        {
-            json = new { Success = true };
+		booking.FullName = model.FullName;
+		booking.Email = model.Email;
+		booking.PhoneNumber = model.PhoneNumber;
+		booking.Duration = model.Duration;
+		booking.Note = model.Note;
+		booking.FromDate = model.FromDate;
+		booking.AccomodationId = model.AccomodationId;
 
-        }
-        else
-        {
-            json = new { Success = false, Message = "Unable to perform action on Booking." };
-        }
+		result = bookingsService.UpdateBooking(booking);
 
-        return Json(json);
+		object json;
+		if (result)
+		{
+			json = new { Success = true };
 
-    }
+		}
+		else
+		{
+			json = new { Success = false, Message = "Unable to perform action on Booking." };
+		}
 
-    [HttpGet]
-    public ActionResult Delete(int Id)
-    {
-        BookingActionModel model = new BookingActionModel();
+		return Json(json);
 
-        var booking = bookingsService.GetBookingById(Id);
+	}
 
-        model.Id = booking.Id;
+	[HttpGet]
+	public ActionResult Delete(int? id)
+	{
+		BookingActionModel model = new BookingActionModel();
 
-        return PartialView( model);
-    }
+		if (id == null)
+			return BadRequest();
 
-    [HttpDelete]
-    [ActionName("Delete")]
-    public JsonResult DeleteConfirm(int Id)
-    {
-        var result = false;
+		var booking = bookingsService.GetBookingById(id.Value);
 
-        var booking = bookingsService.GetBookingById(Id);
+		if (booking == null)
+			return NotFound();
 
-        result = bookingsService.DeleteBooking(booking.Id);
-        object json;
-        if (result)
-        {
-            json = new { Success = true };
+		model.Id = booking.Id;
 
-        }
-        else
-        {
-            json = new { Success = false, Message = "Unable to perform action on Accomodation Types." };
-        }
+		return PartialView(model);
+	}
 
-        return Json(json);
+	[HttpDelete]
+	[ActionName("Delete")]
+	public IActionResult DeleteConfirm(int id)
+	{
+		var booking = bookingsService.GetBookingById(id);
 
-    }
+		bool result;
+		if (booking == null)
+			result = true;
+		else
+			result = bookingsService.DeleteBooking(booking.Id);
+
+		object json;
+		if (result)
+		{
+			json = new { Success = true };
+
+		}
+		else
+		{
+			json = new { Success = false, Message = "Unable to perform action on Accomodation Types." };
+		}
+
+		return Json(json);
+
+	}
 }

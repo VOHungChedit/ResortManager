@@ -41,7 +41,7 @@ namespace ResortMan.Services
             return booking;
         }
 
-        public Booking GetBookingById(int id)
+        public Booking? GetBookingById(int id)
         {
             return _context.Bookings.FirstOrDefault(b => b.Id == id);
         }
