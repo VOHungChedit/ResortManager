@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using ResortMan.Entities;
 using ResortMan.MvcApp.Areas.Dashboard.ViewModels;
@@ -7,6 +8,7 @@ using ResortMan.Services;
 namespace ResortMan.MvcApp.Areas.Dashboard.Controllers;
 
 [Area("Dashboard")]
+[Authorize(Roles = "Administrator")]
 public class AccomodationTypesController : Controller
 {
 	private readonly AccomodationTypesService accomodationTypesService;
@@ -15,12 +17,7 @@ public class AccomodationTypesController : Controller
 	{
 		this.accomodationTypesService = accomodationTypesService;
 	}
-	public IActionResult Listing()
-	{
-		AccomodationTypesListingModel model = new AccomodationTypesListingModel();
-		var list = accomodationTypesService.GetAccomodationTypes();
-		return PartialView("_Listing", model);
-	}
+
 	public IActionResult Index(string? searchTerm)
 	{
 		AccomodationTypesListingModel model;
@@ -38,18 +35,18 @@ public class AccomodationTypesController : Controller
 		{
 			AccomodationTypes = list,
 		};
+
 		return View(model);
-		//return View();
 	}
 
 	[HttpGet]
-	public ActionResult Action(int? Id)
+	public ActionResult Action(int? id)
 	{
 		AccomodationTypesActionModel model = new AccomodationTypesActionModel();
 
-		if (Id.HasValue)
+		if (id.HasValue)
 		{
-			var accomodationType = accomodationTypesService.GetAccomodationTypeById(Id.Value);
+			var accomodationType = accomodationTypesService.GetAccomodationTypeById(id.Value);
 
 			model.Id = accomodationType.Id;
 			model.Name = accomodationType.Name;
@@ -95,15 +92,14 @@ public class AccomodationTypesController : Controller
 		}
 
 		return Json(json);
-
 	}
 
 	[HttpGet]
-	public ActionResult Delete(int Id)
+	public ActionResult Delete(int id)
 	{
 		AccomodationTypesActionModel model = new AccomodationTypesActionModel();
 
-		var accomodationType = accomodationTypesService.GetAccomodationTypeById(Id);
+		var accomodationType = accomodationTypesService.GetAccomodationTypeById(id);
 
 		model.Id = accomodationType.Id;
 
@@ -112,11 +108,11 @@ public class AccomodationTypesController : Controller
 
 	[HttpDelete]
 	[ActionName("Delete")]
-	public JsonResult DeleteConfirm(int Id)
+	public JsonResult DeleteConfirm(int id)
 	{	
 		var result = false;
 		
-		var accomodationType = accomodationTypesService.GetAccomodationTypeById(Id);
+		var accomodationType = accomodationTypesService.GetAccomodationTypeById(id);
 
 		result = accomodationTypesService.DeleteAccomodationType(accomodationType);
 
@@ -132,6 +128,5 @@ public class AccomodationTypesController : Controller
 		}
 
 		return Json(json);
-
 	}
 }

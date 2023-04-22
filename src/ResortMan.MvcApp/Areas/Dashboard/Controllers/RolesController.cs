@@ -7,7 +7,7 @@ using ResortMan.MvcApp.Areas.Dashboard.ViewModels;
 
 namespace ResortMan.MvcApp.Areas.Dashboard.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Administrator")]
 [Area("Dashboard")]
 public class RolesController : Controller
 {
@@ -109,16 +109,17 @@ public class RolesController : Controller
 		return PartialView("_Delete", new RoleViewModel() { Id = role.Id });
 	}
 
-	[ActionName("Delete")]
 	[HttpDelete]
+	[ActionName("Delete")]
 	public async Task<IActionResult> DeleteConfirmAsync(string id)
 	{
 		var role = await roleManager.FindByIdAsync(id);
 
 		if (role == null)
 		{
-			return Problem("Role dpesnt nit exust");
+			return Problem("Role does not exist");
 		}
+
 		var result = await roleManager.DeleteAsync(role);
 		if (result.Succeeded)
 		{

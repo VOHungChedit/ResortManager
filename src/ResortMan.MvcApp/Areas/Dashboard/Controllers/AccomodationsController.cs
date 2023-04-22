@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ResortMan.Entities;
 using ResortMan.MvcApp.Areas.Dashboard.ViewModels;
 using ResortMan.Services;
@@ -6,7 +7,7 @@ using ResortMan.Services;
 namespace ResortMan.MvcApp.Areas.Dashboard.Controllers;
 
 [Area("Dashboard")]
-
+[Authorize(Roles = "Administrator")]
 public class AccomodationsController : Controller
 {
 	private readonly AccomodationPackagesService accomodationPackagesService;
@@ -17,12 +18,7 @@ public class AccomodationsController : Controller
 		this.accomodationsService = accomodationsService;
 		this.accomodationPackagesService = accomodationPackagesService;
 	}
-	public IActionResult Listing()
-	{
-		AccomodationsListingModel model = new AccomodationsListingModel();
-		var list = accomodationsService.GetAccomodations();
-		return PartialView("_Listing", model);
-	}
+
 	public IActionResult Index(string? searchTerm)
 	{
 		AccomodationsListingModel model;
@@ -41,8 +37,8 @@ public class AccomodationsController : Controller
 			Accomodations = list,
 		};
 		return View(model);
-		//return View();
 	}
+
 	[HttpGet]
 	public ActionResult Action(int? id)
 	{
@@ -69,13 +65,16 @@ public class AccomodationsController : Controller
 
 		return PartialView("_Action", model);
 	}
+
 	[HttpPost]
-	public JsonResult Action(AccomodationActionModel model)
+	public IActionResult Action(AccomodationActionModel model)
 	{
 		var result = false;
 		if (model.Id > 0)
 		{
 			var accomodation = accomodationsService.GetAccomodationById(model.Id);
+			if (accomodation == null)
+				return NotFound();
 
 			accomodation.AccomodationPackageId = model.AccomodationPackageId;
 			accomodation.AccomodationPackage = model.AccomodationPackage;
@@ -100,7 +99,6 @@ public class AccomodationsController : Controller
 		if (result)
 		{
 			json = new { Success = true };
-
 		}
 		else
 		{
@@ -108,28 +106,35 @@ public class AccomodationsController : Controller
 		}
 
 		return Json(json);
-
 	}
+
 	[HttpGet]
-	public ActionResult Delete(int Id)
+	public ActionResult Delete(int id)
 	{
 		AccomodationActionModel model = new AccomodationActionModel();
 
-		var accomodation = accomodationsService.GetAccomodationById(Id);
+		var accomodation = accomodationsService.GetAccomodationById(id);
+
+		if (accomodation == null)
+		{
+			return NotFound();
+		}
 
 		model.Id = accomodation.Id;
 
 		return PartialView("_Delete", model);
 	}
+
 	[HttpDelete]
 	[ActionName("Delete")]
-	public JsonResult DeleteConfirm(int Id)
+	public IActionResult DeleteConfirm(int id)
 	{
-		var result = false;
+		var accomodation = accomodationsService.GetAccomodationById(id);
 
-		var accomodation = accomodationsService.GetAccomodationById(Id);
+		if (accomodation == null)
+			return BadRequest();
 
-		result = accomodationsService.DeleteAccomodation(accomodation);
+		var  result = accomodationsService.DeleteAccomodation(accomodation);
 
 		object json;
 		if (result)
@@ -143,6 +148,5 @@ public class AccomodationsController : Controller
 		}
 
 		return Json(json);
-
 	}
 }

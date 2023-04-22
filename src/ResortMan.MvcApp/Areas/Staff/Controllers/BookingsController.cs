@@ -1,35 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using ResortMan.Entities;
 using ResortMan.MvcApp.Areas.Dashboard.ViewModels;
 using ResortMan.MvcApp.Areas.Staff.ViewModels;
 using ResortMan.Services;
+using System.Data;
 
 namespace ResortMan.MvcApp.Areas.Staff.Controllers;
 
+[Authorize(Roles = "Staff")]
 [Area("Staff")]
 public class BookingsController : Controller
 {
+    private readonly BookingService bookingsService;
 
     public BookingsController(BookingService bookingsService)
     {
         this.bookingsService = bookingsService;
     }
 
-    public IActionResult Index()
-    {
-        return Ok("1");
-    }
-
-    private readonly BookingService bookingsService;
-
-
-    public IActionResult Listing()
-    {
-        var model = new BookingListingModel();
-        model.Bookings = bookingsService.GetBookings();
-        return PartialView("_Listing", model);
-    }
     public IActionResult Index(string? searchTerm)
     {
         BookingListingModel model;
@@ -48,7 +38,6 @@ public class BookingsController : Controller
             Bookings = list,
         };
         return View(model);
-        //return View();
     }
 
     [HttpGet]
@@ -71,7 +60,7 @@ public class BookingsController : Controller
 
         }
 
-        return PartialView("_Action", model);
+        return PartialView( model);
     }
 
     [HttpPost]
@@ -115,7 +104,7 @@ public class BookingsController : Controller
 
         model.Id = booking.Id;
 
-        return PartialView("_Delete", model);
+        return PartialView( model);
     }
 
     [HttpDelete]
