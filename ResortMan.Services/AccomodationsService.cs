@@ -53,5 +53,12 @@ public class AccomodationsService
 
     }
 
+	public IEnumerable<Accomodation> GetAccomodationsByPackageId(int accomodationPackageId)
+	{
+		var data = context.Accomodations.AsNoTracking()
+            .Where(a => a.AccomodationPackageId == accomodationPackageId)
+            .ToList();
 
+        return data;
+	}
 }

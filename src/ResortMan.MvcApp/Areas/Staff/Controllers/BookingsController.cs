@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
-using ResortMan.Entities;
-using ResortMan.MvcApp.Areas.Dashboard.ViewModels;
 using ResortMan.MvcApp.Areas.Staff.ViewModels;
 using ResortMan.Services;
-using System.Data;
 
 namespace ResortMan.MvcApp.Areas.Staff.Controllers;
 
@@ -14,10 +10,12 @@ namespace ResortMan.MvcApp.Areas.Staff.Controllers;
 public class BookingsController : Controller
 {
 	private readonly BookingService bookingsService;
+	private readonly AccomodationsService accomodationsService;
 
-	public BookingsController(BookingService bookingsService)
+	public BookingsController(BookingService bookingsService, AccomodationsService accomodationsService)
 	{
 		this.bookingsService = bookingsService;
+		this.accomodationsService = accomodationsService;
 	}
 
 	public IActionResult Index(string? searchTerm)
@@ -61,6 +59,7 @@ public class BookingsController : Controller
 		model.Note = booking.Note;
 		model.FromDate = booking.FromDate;
 		model.AccomodationId = booking.AccomodationId;
+		model.Accomodations = accomodationsService.GetAccomodationsByPackageId(booking.Accomodation.AccomodationPackageId);
 
 		return PartialView(model);
 	}
@@ -97,7 +96,6 @@ public class BookingsController : Controller
 		}
 
 		return Json(json);
-
 	}
 
 	[HttpGet]

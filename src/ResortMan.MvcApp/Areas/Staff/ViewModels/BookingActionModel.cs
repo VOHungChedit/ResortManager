@@ -24,5 +24,5 @@ public class BookingActionModel
     public string? Note { get; set; }
 
     [BindNever, ValidateNever]
-    public ICollection<Accomodation> Accomodations { get; set; } = null!;
+    public IEnumerable<Accomodation> Accomodations { get; set; } = null!;
 }

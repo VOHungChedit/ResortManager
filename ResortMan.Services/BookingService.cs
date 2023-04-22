@@ -43,7 +43,9 @@ namespace ResortMan.Services
 
         public Booking? GetBookingById(int id)
         {
-            return _context.Bookings.FirstOrDefault(b => b.Id == id);
+            return _context.Bookings
+                .Include(b => b.Accomodation)
+                .FirstOrDefault(b => b.Id == id);
         }
 
         public List<Booking> GetBookingsByAccomodationId(int accomodationId)
@@ -67,7 +69,7 @@ namespace ResortMan.Services
         }
         public List<Booking> GetBookings()
         {
-            var data = _context.Bookings.ToList();
+            var data = _context.Bookings.Include(b => b.Accomodation).ToList();
             return data;
         }
         public IEnumerable<Booking> SearchBooking(string searchTerm)
