@@ -25,13 +25,14 @@
         </div>
     </div>
 </div>
+@if (Model.Accomodations == null || Model.Accomodations.Count > 0)
+{
 <div class="site-section site-section-sm">
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-lg-8 mb-5">
                 <h3 class="h5 text-black mb-3">Booking</h3>
                 <form id="bookingForm" action="/api/Booking/" method="post" class="p-5 bg-white">
-                    @*<input name="AccomodationId" id="AccomodationId" type="hidden" value="@Model.Id" />*@
                     <div class="row form-group">
                         <div class="col-md-12 mb-3 mb-md-0">
                             <label class="font-weight-bold" for="FullName">Full Name.</label>
@@ -93,7 +94,12 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
+}
+else
+{
+   <p>Full, Find another</p> 
+}
 @section Scripts {
    @* <script>
         const bookingSubmitBtn = document.getElementById("bookingSubmitBtn")

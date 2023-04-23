@@ -27,13 +27,8 @@ namespace ResortMan.Services
                 return null;
             }
 
-
-            //var endDate = booking.FromDate.AddDays(booking.Duration);
-            //if (enddate > accomodation.accomodationpackage)
-            //{
-            //    return null;
-            //}
-
+            if (!accomodation.IsReady)
+                return null;
 
             _context.Bookings.Add(booking);
             _context.SaveChanges();
