@@ -38,6 +38,17 @@
 				</select>
 			</div>
 			<div class="form-group">
+				<label>Status</label>
+				<select class="form-control" name="Status">
+
+					@foreach (var item in Model.Statuses)
+					{
+						<option value="@item">@item</option>
+					}
+
+				</select>
+			</div>
+			<div class="form-group">
 				<label>FromDate</label>
 				<input class="form-control" name="FromDate" placeholder="Enter FromDate." value="@Model.FromDate">
 			</div>

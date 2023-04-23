@@ -59,6 +59,8 @@ public class BookingsController : Controller
 		model.Note = booking.Note;
 		model.FromDate = booking.FromDate;
 		model.AccomodationId = booking.AccomodationId;
+		model.Status = booking.Status;
+
 		model.Accomodations = accomodationsService.GetAccomodationsByPackageId(booking.Accomodation.AccomodationPackageId);
 
 		return PartialView(model);
@@ -81,7 +83,7 @@ public class BookingsController : Controller
 		booking.Note = model.Note;
 		booking.FromDate = model.FromDate;
 		booking.AccomodationId = model.AccomodationId;
-
+		booking.Status = model.Status;
 		result = bookingsService.UpdateBooking(booking);
 
 		object json;

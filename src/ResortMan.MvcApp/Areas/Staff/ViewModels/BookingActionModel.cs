@@ -23,6 +23,10 @@ public class BookingActionModel
     public int Duration { get; set; }
     public string? Note { get; set; }
 
+    public BookingStatus Status { get; set; }
+
     [BindNever, ValidateNever]
     public IEnumerable<Accomodation> Accomodations { get; set; } = null!;
+
+    public IEnumerable<string> Statuses { get; set; } = Enum.GetNames(typeof(BookingStatus));
 }

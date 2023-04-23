@@ -4,7 +4,8 @@
 public enum BookingStatus
 {
 	Created = 0,
-	Paid = 1,
+	Confirmed = 1,
 	CheckedIn = 2,
 	CheckOut = 4,
+	Paid = 8,
 }
